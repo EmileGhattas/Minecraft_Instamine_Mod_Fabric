@@ -14,3 +14,4 @@ public class InstaMine implements ModInitializer {
 		LOGGER.info("Hello Fabric world!");
 	}
 }
+//test
