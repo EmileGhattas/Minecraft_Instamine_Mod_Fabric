@@ -1,36 +1,37 @@
 package com.emile.instamine.config;
 
 import net.minecraft.block.BlockState;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.registry.Registries;
+import net.minecraft.util.Identifier;
 
-public class HardnessCalculator {
+public final class HardnessCalculator {
 
-    /**
-     * Calculates the hardness value required for a block to be mined in exactly one tick,
-     * assuming Efficiency V and Haste II with the given tool.
-     *
-     * @param toolStack The tool used to mine the block.
-     * @param state The block's default state.
-     * @return The required hardness value.
-     */
-    public static float computeInstamineHardness(ItemStack toolStack, BlockState state) {
-        // Vanilla mining formula: Break time (ticks) = hardness * 30 / miningSpeed
-        // To make it 1 tick => hardness = miningSpeed / 30
+    // Calculates the hardness for 1-tick instant mining with Efficiency V + Haste II
+    public static float computeInstamineHardness(float baseToolSpeed, int effLevel, int hasteLevel) {
+        float effBonus = effLevel > 0 ? effLevel * effLevel + 1 : 0;
+        float hasteBonus = 1.0F + 0.2F * hasteLevel;
 
-        float baseSpeed = toolStack.getMiningSpeedMultiplier(state);
-        int effLevel = 5;   // Efficiency V
-        int hasteLevel = 2; // Haste II
+        float totalSpeed = (baseToolSpeed + effBonus) * hasteBonus;
 
-        // Efficiency adds (effLevel^2 + 1)
-        float effBonus = effLevel * effLevel + 1.0f;
+        // Minecraft formula for dig progress per tick = totalSpeed / hardness / 30
+        // To break instantly (1 tick), hardness = totalSpeed / 30
+        return totalSpeed / 30.0F;
+    }
 
-        // Haste adds +20% per level
-        float hasteMultiplier = 1.0f + (0.2f * hasteLevel);
+    // Generic version that works for any tool (pickaxe, axe, shovel, hoe, etc.)
+    public static float computeInstamineHardness(BlockState state, Item toolItem) {
+        ItemStack stack = new ItemStack(toolItem);
+        float baseSpeed = stack.getMiningSpeedMultiplier(state);
 
-        // Final mining speed
-        float totalSpeed = (baseSpeed + effBonus) * hasteMultiplier;
+        // Use default Eff V + Haste II
+        return computeInstamineHardness(baseSpeed, 5, 2);
+    }
 
-        // To achieve 1 tick mining, we invert the vanilla mining formula
-        return totalSpeed / 30.0f;
+    // Optional helper to get a tool name for logs or GUI
+    public static String getToolName(Item tool) {
+        Identifier id = Registries.ITEM.getId(tool);
+        return id != null ? id.toString() : "<unknown_tool>";
     }
 }
