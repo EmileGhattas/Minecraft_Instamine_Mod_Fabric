@@ -3,7 +3,7 @@
 	"package": "com.emile.instamine.mixin",
 	"compatibilityLevel": "JAVA_21",
 	"mixins": [
-		"ExampleMixin"
+		"PlayerBreakingSpeedMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

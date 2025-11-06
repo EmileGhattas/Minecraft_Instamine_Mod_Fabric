@@ -1,40 +1,23 @@
 {
 	"schemaVersion": 1,
 	"id": "instamine",
-	"version": "${version}",
+	"version": "1.0.0",
 	"name": "InstaMine",
-	"description": "This is an example description! Tell everyone what your mod is about!",
-	"authors": [
-		"EmileSkyZ"
-	],
-	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
-	},
+	"description": "Custom mining mod with config screen integration.",
+	"authors": ["EmileSkyZ"],
 	"license": "MIT",
 	"icon": "assets/instamine/icon.png",
 	"environment": "*",
 	"entrypoints": {
-		"main": [
-			"com.emile.instamine.InstaMine"
-		],
-        "client": [
-            "com.emile.instamine.InstaMineClient"
-        ],
-		"fabric-datagen": [
-			"com.emile.instamine.InstaMineDataGenerator"
-		]
+		"main": ["com.emile.instamine.InstaMine"],
+		"client": ["com.emile.instamine.client.InstaMineClient"],
+		"modmenu": ["com.emile.instamine.client.ModMenuIntegration"]
 	},
-	"mixins": [
-		"instamine.mixins.json"
-	],
 	"depends": {
 		"fabricloader": ">=0.17.3",
 		"minecraft": "~1.21.10",
 		"java": ">=21",
-		"fabric-api": "*"
-	},
-	"suggests": {
-		"another-mod": "*"
+		"fabric-api": "*",
+		"cloth-config2": ">=20.0.149"
 	}
 }
