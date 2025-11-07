@@ -83,14 +83,16 @@ final class AllBlocksPanel {
             Block b = filtered.get(first + i);
             Identifier id = Registries.BLOCK.getId(b);
 
-            ButtonWidget w = ButtonWidget.builder(
-                            Text.literal(id.toString()),
-                            btn -> MinecraftClient.getInstance().setScreen(new BlockDetailsScreen(owner, b))
-                    )
+            ButtonWidget w = ButtonWidget.builder(Text.literal(id.toString()),
+                            btn -> MinecraftClient.getInstance().setScreen(new BlockDetailsScreen(owner, b)))
                     .dimensions(left, y, btnW, 20)
                     .build();
 
-            w.render(ctx, mouseX, mouseY, delta);
+// Tell the owner to register it safely
+            if (owner instanceof InstaMineConfigScreen screen) {
+                screen.registerButton(w);
+            }
+
 
             // block icon
             ctx.drawItem(b.asItem().getDefaultStack(), left - 24, y + 2);

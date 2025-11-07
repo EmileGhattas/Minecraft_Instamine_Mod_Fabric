@@ -24,6 +24,10 @@ public final class InstaMineConfigScreen extends Screen {
         this.parent = parent;
     }
 
+    public void registerButton(ButtonWidget button) {
+        this.addDrawableChild(button);
+    }
+
     public InstaMineConfigScreen() {
         this(MinecraftClient.getInstance().currentScreen);
     }
@@ -58,8 +62,8 @@ public final class InstaMineConfigScreen extends Screen {
 
     @Override
     public void render(DrawContext ctx, int mouseX, int mouseY, float delta) {
-        // keep vanilla blur once per frame
-        this.renderBackground(ctx, mouseX, mouseY, delta);
+        // ✅ Simple static dim background (no blur, no crash)
+        ctx.fillGradient(0, 0, this.width, this.height, 0xA0101010, 0xA0101010);
 
         ctx.drawCenteredTextWithShadow(this.textRenderer, "InstaMine Configuration", this.width / 2, 10, 0xFFFFFF);
 
@@ -74,6 +78,7 @@ public final class InstaMineConfigScreen extends Screen {
 
         super.render(ctx, mouseX, mouseY, delta);
     }
+
 
     @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double horizontalAmount, double verticalAmount) {

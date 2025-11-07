@@ -84,14 +84,15 @@ final class ActiveChangesPanel {
             Identifier id = blocks.get(first + i);
             Block b = Registries.BLOCK.get(id);
 
-            ButtonWidget w = ButtonWidget.builder(
-                            Text.literal(id.toString()),
-                            btn -> MinecraftClient.getInstance().setScreen(new BlockDetailsScreen(owner, b))
-                    )
+            ButtonWidget w = ButtonWidget.builder(Text.literal(id.toString()),
+                            btn -> MinecraftClient.getInstance().setScreen(new BlockDetailsScreen(owner, b)))
                     .dimensions(left, y, btnW, 20)
                     .build();
 
-            w.render(ctx, mouseX, mouseY, delta);
+// Tell the owner to register it safely
+            if (owner instanceof InstaMineConfigScreen screen) {
+                screen.registerButton(w);
+            }
             ctx.drawItem(b.asItem().getDefaultStack(), left - 24, y + 2);
 
             y += ROW_H;
